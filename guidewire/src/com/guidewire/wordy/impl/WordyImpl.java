@@ -2,6 +2,8 @@ package com.guidewire.wordy.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import com.guidewire.wordy.IBoard;
@@ -24,12 +26,18 @@ public class WordyImpl implements IWordy {
 
 	@Override
 	public int scoreWords(List<String> words) {
+		//initialize score
 		int score = 0;
+		
+		//Remove duplicates in the list by using Set
+		List<String>uniqWords = new ArrayList<String>(new LinkedHashSet<String>(words));
+		
 		WordScorerImpl wScorer = new WordScorerImpl();
+		
 		try {
 			WordInBoardValidatorImpl wibValidator = new WordInBoardValidatorImpl();
 			WordValidatorImpl wValidator = new WordValidatorImpl(dictionary);
-			for (String word : words) {
+			for (String word : uniqWords) {
 				// Fail fast depending on which of the 2 conditions is faster to check
 				if (wibValidator.isWordInBoard(board, word) && wValidator.isRealWord(word)) {
 					score += wScorer.scoreWord(word);

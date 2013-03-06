@@ -12,18 +12,18 @@ public class WordInBoardValidatorImpl implements IWordInBoardValidator {
 		// Try to fail early if possible with multiple checks and finally make
 		// sure it passes the snake test
 		
-		// Check if word length >= 3
-		if (word.length() < 3) {
-			return false;
-		}
-
-		// Convert to lower case
-		word = word.toLowerCase();
-
 		// Get board properties
 		int rows = IBoard.BOARD_ROWS;
 		int cols = IBoard.BOARD_COLUMNS;
 		int cells = IBoard.BOARD_CELLS;
+		
+		// Convert to lower case
+		word = word.toLowerCase();
+		
+		// Check if word length >= 3 or length > cells
+		if (word.length() < 3 || word.length() > cells) {
+			return false;
+		}
 
 		// map to store character count
 		Map<Character, Integer> charCount = new HashMap<Character, Integer>();
