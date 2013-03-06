@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.guidewire.wordy.IBoard;
@@ -17,6 +18,14 @@ public class WordyImplTest{
 	WordyImpl wImpl;
 	IBoard cBoard;
 	String [] boardStrings;
+	static int rows, cols, cells;
+	
+	@BeforeClass
+	public static void setupOnce() throws Exception{
+		cells = IBoard.BOARD_CELLS;
+		rows = IBoard.BOARD_ROWS;
+		cols = IBoard.BOARD_COLUMNS;
+	}
 	
 	@Before
 	public void setup() throws Exception{
@@ -53,6 +62,18 @@ public class WordyImplTest{
 	}
 	
 	@Test
+	public void testValidWordsButDifferentCases(){
+		List<String> words = Arrays.asList("sTUb", "AMBLE", "SWami", "aXILe", "WAMES", "blahblahblahblah");
+		assertEquals("Failed to validate words with different cases", wImpl.scoreWords(words), 9);
+	}
+	
+	@Test
+	public void testEmptyWords(){
+		List<String> words = Arrays.asList("", " ", "");
+		assertEquals("Failed to validate words with different cases", wImpl.scoreWords(words), 0);
+	}
+	
+	@Test
 	public void testGenNewBoardIsOfTypeIBoard(){
 		IBoard newBoard = wImpl.generateNewBoard();
 		assertTrue("Failed GenNewBoardIsOfTypeIBoard", newBoard instanceof IBoard);
@@ -61,8 +82,6 @@ public class WordyImplTest{
 	@Test
 	public void testValidBoard(){
 		IBoard board = wImpl.generateNewBoard();
-		int rows = IBoard.BOARD_ROWS;
-		int cols = IBoard.BOARD_COLUMNS;
 		
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
@@ -73,9 +92,6 @@ public class WordyImplTest{
 	
 	@Test
 	public void testCustomBoard(){
-		int rows = IBoard.BOARD_ROWS;
-		int cols = IBoard.BOARD_COLUMNS;
-		
 		for(int i = 0; i < rows; i++){
 			String s = boardStrings[i];
 			for(int j = 0; j < cols; j++){
@@ -83,9 +99,23 @@ public class WordyImplTest{
 			}
 		}
 	}
+	
+	@Test
+	public void testPDFTestCase(){
+		boardStrings = new String[]{"COSA",
+								 	"SWLV",
+								 	"GNIB",
+								 	"RKBT"};
+		wImpl = new WordyImpl();
+		cBoard = wImpl.generateNewBoard(boardStrings);
+		List<String> words = Arrays.asList("cow", "slow", "tin", "bit", "blink");
+		//It's wrong in PDF, score is given as 7 ???
+		assertEquals("Failed to validate PDFTestCase", wImpl.scoreWords(words), 6);
+	}
 
 	@After
 	public void tearDown() throws Exception{
 		wImpl = null;
+		cBoard = null;
 	}
 }

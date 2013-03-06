@@ -20,8 +20,8 @@ public class WordInBoardValidatorImpl implements IWordInBoardValidator {
 		// Convert to lower case
 		word = word.toLowerCase();
 		
-		// Check if word length >= 3 or length > cells
-		if (word.length() < 3 || word.length() > cells) {
+		// Check if 1 >= wordLength >= cells, if not return false
+		if (word.length() < 1 || word.length() > cells) {
 			return false;
 		}
 

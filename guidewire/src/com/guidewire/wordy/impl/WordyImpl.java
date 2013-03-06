@@ -46,6 +46,7 @@ public class WordyImpl implements IWordy {
 				//trim the string
 				word = word.trim();
 				// Fail fast depending on which of the 2 conditions is faster to check
+				// Can switch conditions if the board is much bigger in size (currently 4x4)
 				if (wibValidator.isWordInBoard(board, word) && wValidator.isRealWord(word)) {
 					score += wScorer.scoreWord(word);
 				}
