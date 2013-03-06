@@ -72,6 +72,32 @@ public class BoardImpl implements IBoard {
       }
     }
   }
+  
+  /**
+   * Initialize the board with given strings
+   */
+  public BoardImpl(String[] boardStrings){
+	 //In case of failure, assigns random strings
+	 this();
+	 
+	 //Perform sanity check on boardStrings, if it fails, call BoardImpl()
+	 if(boardStrings.length != BOARD_ROWS){
+		 return;
+	 }
+	 for(String s : boardStrings){
+		if(s.length() != BOARD_COLUMNS){
+			return;
+		}
+	 }
+	 
+	 //Assign strings to board
+	 for(int row = 0; row < BOARD_ROWS; row++){
+		 String s = boardStrings[row];
+		 for(int col = 0; col < BOARD_COLUMNS; col++){
+			 _cells[row][col] = s.charAt(col);
+		 }
+	 }
+  }
 
   @Override
   public char getCell(int row, int column) {

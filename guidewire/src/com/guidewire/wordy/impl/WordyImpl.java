@@ -23,6 +23,11 @@ public class WordyImpl implements IWordy {
 		board = new BoardImpl();
 		return board;
 	}
+	
+	public IBoard generateNewBoard(String[] boardStrings) {
+		board = new BoardImpl(boardStrings);
+		return board;
+	}
 
 	@Override
 	public int scoreWords(List<String> words) {
@@ -38,6 +43,8 @@ public class WordyImpl implements IWordy {
 			WordInBoardValidatorImpl wibValidator = new WordInBoardValidatorImpl();
 			WordValidatorImpl wValidator = new WordValidatorImpl(dictionary);
 			for (String word : uniqWords) {
+				//trim the string
+				word = word.trim();
 				// Fail fast depending on which of the 2 conditions is faster to check
 				if (wibValidator.isWordInBoard(board, word) && wValidator.isRealWord(word)) {
 					score += wScorer.scoreWord(word);
